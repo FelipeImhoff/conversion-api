@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 9UinY6mQ5xJ3at3P
+      POSTGRES_DB: inside
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./case_tech_lead.sql:/docker-entrypoint-initdb.d/case_tech_lead.sql
+
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgres://user:9UinY6mQ5xJ3at3P@db:5432/inside"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/api
+      - /api/node_modules
+
+volumes:
+  pgdata:

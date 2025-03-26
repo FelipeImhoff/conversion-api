@@ -1,0 +1,23 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["inside"]
+}
+
+model UsersSurveysResponsesAux {
+  id               Int      @id @default(autoincrement())
+  origin           String
+  responseStatusId Int      @map("response_status_id")
+  createdAt        DateTime @default(now())
+
+  @@index([origin])
+  @@index([responseStatusId])
+  @@index([origin, responseStatusId])
+  @@map("users_surveys_responses_aux")
+  @@schema("inside")
+}
